@@ -1,0 +1,48 @@
+package main
+
+import "testing"
+
+func TestUnpackRLE(t *testing.T) {
+    t.Run("happy path", func(t *testing.T) {
+        result, err := DoSomething(1)
+        if err != nil {
+            t.Fatalf("Ожидалась ошибка nil, получили %v", err)
+        }
+        if result != "ok" {
+            t.Errorf("Ожидалось 'ok', получили %s", result)
+        }
+    })
+
+    t.Run("error case", func(t *testing.T) {
+		var tests = []struct {
+			input string
+			want string
+		}{
+			{"a4bc2d5e", "aaaabccddddde"},
+			{"abcd", "abcd"},
+			{"", ""},
+			{"qwe\\4\\5", "qwe45"},
+			{"qwe\\45", "qwe44444"},
+		}
+
+		for _, tt := range tests {
+			got := UnpackRLE(tt.input)
+			if got != tt.want {
+				t.Errorf("InUnpackRLEtMin(%d, %d) = %d; want %d", tt.a, tt.b, got, tt.want)
+        }
+    }
+
+        _, err := UnpackRLE(-1)
+        if err == nil {
+            t.Fatal("Ожидалась ошибка, получили nil")
+        }
+        expected := "недопустимое значение"
+        if err.Error() != expected {
+            t.Errorf("Ожидалась ошибка %q, получили %q", expected, err.Error())
+        }
+    })
+
+
+
+
+}

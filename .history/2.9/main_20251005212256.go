@@ -1,0 +1,44 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+func main() {
+	res, err := EncodeWithRLE("")
+	if err != nil {
+		fmt.Println("Error:", err)
+	} else {
+		fmt.Println("Result:", res)
+	}
+}
+
+func UnpackRLE(s string) (string, error) {
+	var sb strings.Builder
+	left, right := 0, 0
+	runes := []rune(s)
+	
+	for right < len(runes) {
+		if runes[left] != runes[right] {
+			if right - left > 1 {
+				sb.WriteString(fmt.Sprintf("%c%d", runes[left], right - left))
+			} else {
+				sb.WriteRune(runes[left])
+				
+			}
+			left = right
+		}
+		right++
+	}
+
+	if right - left > 1 {
+		sb.WriteString(fmt.Sprintf("%c%d", runes[left], right - left))
+	} else {
+		sb.WriteRune(runes[left])
+	}
+	
+	return sb.String(), nil
+}
